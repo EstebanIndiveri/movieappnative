@@ -37,9 +37,15 @@ export default function App() {
 
   return (
     <PreferencesContext.Provider value={preference}>
-      <PaperProvider theme={DarkThemePaper}>
-        <NavigationContainer theme={DarkThemeNavigation}>
-          <StatusBar barStyle={'light-content'} />
+      <PaperProvider
+        theme={theme === 'dark' ? DarkThemePaper : DefaultThemePaper}>
+        <StatusBar
+          barStyle={theme === 'dark' ? 'light-content' : 'dark-content'}
+        />
+        <NavigationContainer
+          theme={
+            theme === 'dark' ? DarkThemeNavigation : DefaultThemeNavigation
+          }>
           <Navigation />
         </NavigationContainer>
       </PaperProvider>
