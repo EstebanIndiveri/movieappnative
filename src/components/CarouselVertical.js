@@ -9,7 +9,9 @@ import {
 import {Text, Title} from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel';
 import {BASE_PATH_IMG} from '../../utils/constans';
+import {getGenreMovieApp} from '../api/movies';
 const {width} = Dimensions.get('window');
+import {map,size} from 'lodash';
 const ITEM_WIDTH = Math.round(width * 0.7);
 export default function CarouselVertical(props) {
   const {data} = props;
@@ -25,14 +27,31 @@ export default function CarouselVertical(props) {
   );
 }
 function RenderItem(props) {
-  const {data} = props;
-  const {title, poster_path} = data.item;
-  const imageUrl = `${BASE_PATH_IMG}/w500/${poster_path}`;
+    const {data} = props;
+    const {title, poster_path,genre_ids} = data.item;
+    const imageUrl = `${BASE_PATH_IMG}/w500/${poster_path}`;
+    const [genres, setGenres] = useState(null);
+    useEffect(()=>{
+        getGenreMovieApp(genre_ids).then((response)=>{
+            setGenres(response);
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[]);
   return (
     <TouchableWithoutFeedback onPress={() => console.log('hola')}>
       <View style={styles.card}>
         <Image style={styles.image} source={{uri: imageUrl}} />
         <Title style={styles.title}>{title}</Title>
+        <View style={styles.genres}>
+            {genres&&(
+                map(genres,(genre,index)=>(
+                    <Text key={index} style={styles.genre}>
+                        {genre}
+                        {index!==size(genres)-1 && ', '}
+                    </Text>
+                ))
+            )}
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -57,4 +76,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginTop: 10,
   },
+  genres:{
+      flexDirection:'row',
+      marginHorizontal:10,
+  },
+  genre:{
+      fontSize:12,
+      color:'#8997a5',
+  }
 });
