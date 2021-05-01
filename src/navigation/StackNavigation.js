@@ -1,6 +1,6 @@
 import React from 'react';
 import {IconButton} from 'react-native-paper';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator,CardStyleInterpolators} from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Movie from '../screens/Movie';
 import NewMovie from '../screens/News';
@@ -9,13 +9,19 @@ import Popular from '../screens/Popular';
 
 const Stack = createStackNavigator();
 
-export default function StackNavigation() {
+export default function StackNavigation(props) {
+  const {navigation} = props;
   const buttonLeft = () => {
-    return <IconButton icon="menu" onPress={() => console.log('open Menu')} />;
+    return <IconButton icon="menu" onPress={() => navigation.openDrawer()} />;
   };
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+    screenOptions={{
+      cardStyleInterpolator:CardStyleInterpolators.forHorizontalIOS,
+    }}
+    headerMode="float"
+    >
       <Stack.Screen
         name="Home"
         component={Home}
@@ -29,6 +35,7 @@ export default function StackNavigation() {
         component={Movie}
         options={{
           title: '',
+          headerLeft: () => buttonLeft(),
         }}
       />
       <Stack.Screen
@@ -36,6 +43,7 @@ export default function StackNavigation() {
         component={NewMovie}
         options={{
           title: 'Nuevas Peliculas',
+          headerLeft: () => buttonLeft(),
         }}
       />
       <Stack.Screen
@@ -43,6 +51,7 @@ export default function StackNavigation() {
         component={Popular}
         options={{
           title: 'Peliculas Populares',
+          headerLeft: () => buttonLeft(),
         }}
       />
       <Stack.Screen
@@ -50,6 +59,7 @@ export default function StackNavigation() {
         component={Search}
         options={{
           title: '',
+          headerLeft: () => buttonLeft(),
         }}
       />
     </Stack.Navigator>

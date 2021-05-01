@@ -1,22 +1,48 @@
-import React from 'react';
-import {SafeAreaView, StyleSheet, Text} from 'react-native';
-import {Provider as PaperProvider} from 'react-native-paper';
-import {Button, Card} from 'react-native-paper';
-import {NavigationContainer} from '@react-navigation/native';
+import React, {useMemo, useState} from 'react';
+import {StatusBar} from 'react-native';
+import {
+  Provider as PaperProvider,
+  DarkTheme as DarkThemePaper,
+  DefaultTheme as DefaultThemePaper,
+} from 'react-native-paper';
+import {
+  NavigationContainer,
+  DarkTheme as DarkThemeNavigation,
+  DefaultTheme as DefaultThemeNavigation,
+} from '@react-navigation/native';
 import Navigation from './src/navigation/Navigation';
+import PreferencesContext from './src/context/PreferencesContext';
+
 export default function App() {
+  const [theme, setTheme] = useState('dark');
+  DefaultThemePaper.colors.primary = '#1ae1f2';
+  DarkThemePaper.colors.primary = '#1ae1f2';
+  DarkThemePaper.colors.accent = '#1ae1f2';
+
+  DarkThemeNavigation.colors.background = '#192734';
+  DarkThemeNavigation.colors.card = '#15212b';
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
+
+  const preference = useMemo(
+    () => ({
+      toggleTheme,
+      theme,
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [theme],
+  );
+
   return (
-    <PaperProvider>
-      <NavigationContainer>
-        <Navigation />
-      </NavigationContainer>
-    </PaperProvider>
+    <PreferencesContext.Provider value={preference}>
+      <PaperProvider theme={DarkThemePaper}>
+        <NavigationContainer theme={DarkThemeNavigation}>
+          <StatusBar barStyle={'light-content'} />
+          <Navigation />
+        </NavigationContainer>
+      </PaperProvider>
+    </PreferencesContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#FFF',
-    flex: 1,
-  },
-});
