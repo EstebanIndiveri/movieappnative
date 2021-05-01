@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {IconButton} from 'react-native-paper';
 import {createStackNavigator} from '@react-navigation/stack';
 import Home from '../screens/Home';
 import Movie from '../screens/Movie';
@@ -7,11 +7,13 @@ import NewMovie from '../screens/News';
 import Search from '../screens/Search';
 import Popular from '../screens/Popular';
 
-
-
 const Stack = createStackNavigator();
 
 export default function StackNavigation() {
+  const buttonLeft = () => {
+    return <IconButton icon="menu" onPress={() => console.log('open Menu')} />;
+  };
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -19,6 +21,7 @@ export default function StackNavigation() {
         component={Home}
         options={{
           title: 'TheMovieApp',
+          headerLeft: () => buttonLeft(),
         }}
       />
       <Stack.Screen
