@@ -1,30 +1,22 @@
-import React from 'react'
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
-import { Provider as PaperProvider } from 'react-native-paper';
-import { Button,Card } from 'react-native-paper';
-
+import React from 'react';
+import {SafeAreaView, StyleSheet, Text} from 'react-native';
+import {Provider as PaperProvider} from 'react-native-paper';
+import {Button, Card} from 'react-native-paper';
+import {NavigationContainer} from '@react-navigation/native';
+import Navigation from './src/navigation/Navigation';
 export default function App() {
   return (
     <PaperProvider>
-      <SafeAreaView style={styles.container}>
-        <Text>APP</Text>
-        <Button mode="contained" onPress={() => console.log('Pressed')}>
-    Press me
-  </Button>
-  <Card>
-    <Card.Actions>
-      <Button>Cancel</Button>
-      <Button>Ok</Button>
-    </Card.Actions>
-  </Card>
-      </SafeAreaView>
+      <NavigationContainer>
+        <Navigation />
+      </NavigationContainer>
     </PaperProvider>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-  container:{
-    backgroundColor:'#FFF',
-    flex:1,
-  }
-})
+  container: {
+    backgroundColor: '#FFF',
+    flex: 1,
+  },
+});
