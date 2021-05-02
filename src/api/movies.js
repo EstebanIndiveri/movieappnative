@@ -50,14 +50,23 @@ export function getGenreMoviesApi(idGenres) {
     });
 }
 
-export function getMovieByIdApi(movieID){
-    const url=`${API_HOST}/movie/${movieID}?api_key=${API_KEY}&language=${LANG}`;
-    return fetch(url)
+export function getMovieByIdApi(movieID) {
+  const url = `${API_HOST}/movie/${movieID}?api_key=${API_KEY}&language=${LANG}`;
+  return fetch(url)
     .then(response => {
       return response.json();
     })
     .then(result => {
       return result;
     });
-
+}
+export function getVideoMovieApi(idMovie) {
+  const url = `${API_HOST}/movie/${idMovie}/videos?api_key=${API_KEY}&language=en-EN`;
+  return fetch(url)
+    .then(response => {
+      return response.json();
+    })
+    .then(result => {
+      return result;
+    });
 }
