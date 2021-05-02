@@ -5,12 +5,18 @@ import {BASE_PATH_IMG} from '../../utils/constans';
 import {getMovieByIdApi} from '../api/movies';
 import ModalVideo from '../components/ModalVideo';
 import {map} from 'lodash';
+import {Rating} from 'react-native-ratings';
+import starDark from '../assets/png/starDark.png';
+import starLight from '../assets/png/starLight.png';
+import usePreferences from '../hooks/usePreferences';
+
 
 export default function Movie(props) {
   const {route} = props;
   const {id} = route.params;
   const [movie, setMovie] = useState(null);
   const [showVideo, setShowVideo] = useState(false);
+  // console.log(movie);
   useEffect(() => {
     getMovieByIdApi(id).then(response => {
       setMovie(response);
@@ -25,6 +31,7 @@ export default function Movie(props) {
         <MovieImage posterPath={movie?.poster_path} />
         <MovieTrailer setShowVideo={setShowVideo} />
         <MovieTitle movie={movie}/>
+        <MovieRating voteCount={movie.vote_count} voteAverage={movie.vote_average}/>
       </ScrollView>
       <ModalVideo idMovie={id} show={showVideo} setShow={setShowVideo} />
     </>
@@ -56,7 +63,6 @@ function MovieTrailer(props) {
 }
 function MovieTitle(props){
   const{movie}=props;
-  console.log(movie.genres);
   return(
     <View style={styles.viewInfo}>
       <Title>{movie.title}</Title>
@@ -71,6 +77,24 @@ function MovieTitle(props){
       </View>
     </View>
   );
+}
+function MovieRating(props){
+  const {voteCount,voteAverage}=props;
+  const media=voteAverage/2;
+  const {theme} = usePreferences();
+  return(
+    <View style={styles.viewRating}>
+      <Rating
+      type='custom'
+      ratingImage={theme==='dark'?starDark:starLight}
+      ratingColor="#ffc205"
+      ratingBackgroundColor={theme==='dark'?"#192734":"#f0f0f0"}
+      startingValue={media}
+      imageSize={20}
+      style={{marginRight:15}}
+      />
+    </View>    
+  )
 }
 const styles = StyleSheet.create({
   poster: {
@@ -109,5 +133,11 @@ const styles = StyleSheet.create({
   genre:{
     marginRight:10,
     color:'#8697a5',
+  },
+  viewRating:{
+    marginHorizontal:30,
+    marginTop:10,
+    flexDirection:'row',
+    alignItems:'center',
   }
 });
