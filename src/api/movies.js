@@ -49,3 +49,15 @@ export function getGenreMoviesApi(idGenres) {
       return result;
     });
 }
+
+export function getMovieByIdApi(movieID){
+    const url=`${API_HOST}/movie/${movieID}?api_key=${API_KEY}&language=${LANG}`;
+    return fetch(url)
+    .then(response => {
+      return response.json();
+    })
+    .then(result => {
+      return result;
+    });
+
+}
