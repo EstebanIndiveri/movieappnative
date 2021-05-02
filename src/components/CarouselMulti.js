@@ -37,7 +37,6 @@ function RenderItem(props) {
   const {id, title, poster_path} = data.item;
   const imageUrl = `${BASE_PATH_IMG}/w500${poster_path}`;
   const onNavigation = () => {
-    // console.log('navegando');
     navigation.navigate('Movie', {id});
   };
   return (
