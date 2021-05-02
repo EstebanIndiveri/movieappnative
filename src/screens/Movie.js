@@ -93,6 +93,8 @@ function MovieRating(props){
       imageSize={20}
       style={{marginRight:15}}
       />
+      <Paragraph style={{fontSize:16,marginRight:5}}>{media}</Paragraph>
+      <Paragraph style={{fontSize:12,color:"#8697a5"}}>{voteCount} votos</Paragraph>
     </View>    
   )
 }
