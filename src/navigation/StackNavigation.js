@@ -56,6 +56,7 @@ export default function StackNavigation(props) {
         component={Movie}
         options={{
           title: '',
+          headerTransparent:true,
           headerLeft: () => buttonLeft('Movie'),
           headerRight: () => buttonRigth(),
         }}
