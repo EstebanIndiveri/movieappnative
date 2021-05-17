@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, StyleSheet, ScrollView} from 'react-native';
+import {View, Image, StyleSheet, ScrollView,Text} from 'react-native';
 import {IconButton, Title,Paragraph} from 'react-native-paper';
 import {BASE_PATH_IMG} from '../../utils/constans';
 import {getMovieByIdApi} from '../api/movies';
@@ -27,11 +27,13 @@ export default function Movie(props) {
   if (!movie) return null;
   return (
     <>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <MovieImage posterPath={movie?.poster_path} />
         <MovieTrailer setShowVideo={setShowVideo} />
         <MovieTitle movie={movie}/>
         <MovieRating voteCount={movie.vote_count} voteAverage={movie.vote_average}/>
+        <Text style={styles.overview}>{movie.overview}</Text>
+        <Text style={[styles.overview],{marginBottom:30}}>Fecha de lanzamiento{movie.release_date}</Text>
       </ScrollView>
       <ModalVideo idMovie={id} show={showVideo} setShow={setShowVideo} />
     </>
@@ -141,5 +143,11 @@ const styles = StyleSheet.create({
     marginTop:10,
     flexDirection:'row',
     alignItems:'center',
+  },
+  overview:{
+    marginHorizontal:30,
+    marginTop:20,
+    textAlign:'justify',
+    color:"#8697a5",
   }
 });
