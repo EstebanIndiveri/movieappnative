@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import {View,StyleSheet,ScrollView,Image} from 'react-native';
-import {Text, Title} from 'react-native-paper'; 
+import {Text, Title,Button} from 'react-native-paper'; 
 import {map} from 'lodash'
 import {getPopularMoviesApi} from '../api/movies'
 import { BASE_PATH_IMG } from '../../utils/constans';
@@ -13,16 +13,39 @@ export default function Popular(props) {
   const {theme} =usePreferences();
   const {navigation}=props;
   const [movies, setMovies] = useState(null);
+  const [showBtnMore, setShowBtnMore] = useState(true);
+  const [page, setPage] = useState(1);
   useEffect(()=>{
-    getPopularMoviesApi().then(res=>{
-      setMovies(res.results);
+    getPopularMoviesApi(page).then(res=>{
+      // setMovies(res.results);
+      const totalPage=res.total_pages;
+      if(page<totalPage){
+        if(!movies){
+          setMovies(res.results)
+        }else{
+          setMovies([...movies,...res.results])
+        }
+      }else{
+        setShowBtnMore(false);
+      }
     });
-  },[]);
+  },[page]);
   return (
     <ScrollView>
       {map(movies,(movie,index)=>(
         <Movie key={index} movie={movie} theme={theme}/>
       ))}
+      {showBtnMore&&(
+        <Button
+        mode='contained'
+        contentStyle={styles.loadMoreContainer}
+        style={styles.loadMore}
+        labelStyle={{color:theme==='dark'?'#FFF':'#000'}}
+        onPress={()=>setPage(page+1)}
+        >
+          Cargar mas ...
+        </Button>
+      )}
     </ScrollView>
   );
 }
@@ -84,4 +107,11 @@ const styles=StyleSheet.create({
     justifyContent:'flex-start',
     marginTop:10,
   },
+  loadMoreContainer:{
+    paddingTop:10,
+    paddingBottom:30,
+  },
+  loadMore:{
+    backgroundColor:'transparent'
+  }
 })
