@@ -148,6 +148,6 @@ const styles = StyleSheet.create({
     marginHorizontal:30,
     marginTop:20,
     textAlign:'justify',
-    color:"#8697a5",
-  }
+    color:'#8697a5',
+  },
 });
