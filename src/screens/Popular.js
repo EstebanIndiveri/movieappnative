@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {View,StyleSheet,ScrollView,Image} from 'react-native';
+import {View,StyleSheet,ScrollView,Image,TouchableWithoutFeedback} from 'react-native';
 import {Text, Title,Button} from 'react-native-paper'; 
 import {map} from 'lodash'
 import {getPopularMoviesApi} from '../api/movies'
@@ -29,11 +29,12 @@ export default function Popular(props) {
         setShowBtnMore(false);
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[page]);
   return (
     <ScrollView>
       {map(movies,(movie,index)=>(
-        <Movie key={index} movie={movie} theme={theme}/>
+        <Movie key={index} movie={movie} theme={theme} navigation={navigation}/>
       ))}
       {showBtnMore&&(
         <Button
@@ -51,9 +52,14 @@ export default function Popular(props) {
 }
 
 function Movie(props){
-  const{movie,theme}=props;
-  const {title,release_date,vote_count, vote_average}=movie;
+  const{movie,theme,navigation}=props;
+  const {title,release_date,vote_count, vote_average,id}=movie;
+  const goMovie=()=>{
+    navigation.navigate('Movie',{id});
+
+  }
   return(
+    <TouchableWithoutFeedback onPress={goMovie}>
     <View style={styles.movie}>
       <View style={styles.left}>
         <Image style={styles.image} source={movie.poster_path?{uri:`${BASE_PATH_IMG}/w500/${movie.poster_path}`}:{noImage}}/>
@@ -66,6 +72,7 @@ function Movie(props){
         <MovieRating theme={theme} voteCount={vote_count} voteAverage={vote_average}/>
       </View>
     </View>
+    </TouchableWithoutFeedback>
   )
 }
 function MovieRating(props){
