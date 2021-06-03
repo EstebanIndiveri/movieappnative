@@ -13,7 +13,7 @@ export default function Search() {
 
   return (
     <View>
-      <Text>Estamos en Search</Text>
+      <Text>Estamos en Search Testing MAC</Text>
     </View>
   );
 }
