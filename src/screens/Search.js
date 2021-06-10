@@ -13,9 +13,12 @@ import {
 import {Searchbar} from 'react-native-paper';
 import {searchMovieApi} from '../api/movies';
 import {size, map} from 'lodash';
-import { BASE_PATH_IMG } from '../../utils/constans';
+import {BASE_PATH_IMG} from '../../utils/constans';
 
-export default function Search() {
+const {width} = Dimensions.get('window');
+
+export default function Search(props) {
+  const {navigation} = props;
   const [movies, setMovies] = useState(null);
   const [search, setSearch] = useState('');
 
@@ -37,20 +40,34 @@ export default function Search() {
       />
       <ScrollView>
         <View style={styles.container}>
-          {map(movies,(movie,index)=>(
-            <Movie key={index} movei={movies}/>
+          {map(movies, (movie, index) => (
+            <Movie key={index} movie={movie} navigation={navigation} />
           ))}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-function Movie(){
-  return(
-    <TouchableWithoutFeedback>
-      <Text>HOLA</Text>
+function Movie(props) {
+  const {movie, navigation} = props;
+  const {poster_path, title, id} = movie;
+  const goMovie = () => {
+    navigation.navigate('Movie', {id});
+  };
+  return (
+    <TouchableWithoutFeedback onPress={goMovie}>
+      <View style={styles.movie}>
+        {poster_path ? (
+          <Image
+            source={{uri: `${BASE_PATH_IMG}/w500${poster_path}`}}
+            style={styles.image}
+          />
+        ) : (
+          <Text>{title}</Text>
+        )}
+      </View>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -62,5 +79,15 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+  },
+  movie: {
+    width: width / 2,
+    height: 300,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: '100%',
+    height: '100%',
   },
 });

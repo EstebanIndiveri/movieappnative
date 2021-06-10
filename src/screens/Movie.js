@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {View, Image, StyleSheet, ScrollView,Text} from 'react-native';
-import {IconButton, Title,Paragraph} from 'react-native-paper';
+import {View, Image, StyleSheet, ScrollView, Text} from 'react-native';
+import {IconButton, Title, Paragraph} from 'react-native-paper';
 import {BASE_PATH_IMG} from '../../utils/constans';
 import {getMovieByIdApi} from '../api/movies';
 import ModalVideo from '../components/ModalVideo';
@@ -9,7 +9,6 @@ import {Rating} from 'react-native-ratings';
 import starDark from '../assets/png/starDark.png';
 import starLight from '../assets/png/starLight.png';
 import usePreferences from '../hooks/usePreferences';
-
 
 export default function Movie(props) {
   const {route} = props;
@@ -30,10 +29,15 @@ export default function Movie(props) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <MovieImage posterPath={movie?.poster_path} />
         <MovieTrailer setShowVideo={setShowVideo} />
-        <MovieTitle movie={movie}/>
-        <MovieRating voteCount={movie.vote_count} voteAverage={movie.vote_average}/>
+        <MovieTitle movie={movie} />
+        <MovieRating
+          voteCount={movie.vote_count}
+          voteAverage={movie.vote_average}
+        />
         <Text style={styles.overview}>{movie.overview}</Text>
-        <Text style={[styles.overview],{marginBottom:30}}>Fecha de lanzamiento{movie.release_date}</Text>
+        <Text style={[styles.overview, {marginBottom: 30}]}>
+          Fecha de lanzamiento{movie.release_date}
+        </Text>
       </ScrollView>
       <ModalVideo idMovie={id} show={showVideo} setShow={setShowVideo} />
     </>
@@ -63,16 +67,14 @@ function MovieTrailer(props) {
     </View>
   );
 }
-function MovieTitle(props){
-  const{movie}=props;
-  return(
+function MovieTitle(props) {
+  const {movie} = props;
+  return (
     <View style={styles.viewInfo}>
       <Title>{movie.title}</Title>
       <View style={styles.viewGenres}>
-        {map(movie.genres,(genre)=>(
-          <Paragraph key={genre.id}
-          style={styles.genre}
-          >
+        {map(movie.genres, genre => (
+          <Paragraph key={genre.id} style={styles.genre}>
             {genre.name}
           </Paragraph>
         ))}
@@ -80,25 +82,27 @@ function MovieTitle(props){
     </View>
   );
 }
-function MovieRating(props){
-  const {voteCount,voteAverage}=props;
-  const media=voteAverage/2;
+function MovieRating(props) {
+  const {voteCount, voteAverage} = props;
+  const media = voteAverage / 2;
   const {theme} = usePreferences();
-  return(
+  return (
     <View style={styles.viewRating}>
       <Rating
-      type='custom'
-      ratingImage={theme==='dark'?starDark:starLight}
-      ratingColor="#ffc205"
-      ratingBackgroundColor={theme==='dark'?"#192734":"#f0f0f0"}
-      startingValue={media}
-      imageSize={20}
-      style={{marginRight:15}}
+        type="custom"
+        ratingImage={theme === 'dark' ? starDark : starLight}
+        ratingColor="#ffc205"
+        ratingBackgroundColor={theme === 'dark' ? '#192734' : '#f0f0f0'}
+        startingValue={media}
+        imageSize={20}
+        style={{marginRight: 15}}
       />
-      <Paragraph style={{fontSize:16,marginRight:5}}>{media}</Paragraph>
-      <Paragraph style={{fontSize:12,color:"#8697a5"}}>{voteCount} votos</Paragraph>
-    </View>    
-  )
+      <Paragraph style={{fontSize: 16, marginRight: 5}}>{media}</Paragraph>
+      <Paragraph style={{fontSize: 12, color: '#8697a5'}}>
+        {voteCount} votos
+      </Paragraph>
+    </View>
+  );
 }
 const styles = StyleSheet.create({
   poster: {
@@ -128,26 +132,26 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
-  viewInfo:{
-    marginHorizontal:30,
+  viewInfo: {
+    marginHorizontal: 30,
   },
-  viewGenres:{
-    flexDirection:'row',
+  viewGenres: {
+    flexDirection: 'row',
   },
-  genre:{
-    marginRight:10,
-    color:'#8697a5',
+  genre: {
+    marginRight: 10,
+    color: '#8697a5',
   },
-  viewRating:{
-    marginHorizontal:30,
-    marginTop:10,
-    flexDirection:'row',
-    alignItems:'center',
+  viewRating: {
+    marginHorizontal: 30,
+    marginTop: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  overview:{
-    marginHorizontal:30,
-    marginTop:20,
-    textAlign:'justify',
-    color:'#8697a5',
+  overview: {
+    marginHorizontal: 30,
+    marginTop: 20,
+    textAlign: 'justify',
+    color: '#8697a5',
   },
 });
