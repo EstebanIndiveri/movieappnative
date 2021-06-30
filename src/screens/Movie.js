@@ -104,13 +104,7 @@ function MovieRating(props) {
     </View>
   );
 }
-function Test(props) {
-  return (
-    <View>
-      <Text>testing component</Text>
-    </View>
-  );
-}
+
 const styles = StyleSheet.create({
   poster: {
     width: '100%',
